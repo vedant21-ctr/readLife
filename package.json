@@ -1,0 +1,14 @@
+{
+    "name": "readstream-app-root",
+    "version": "1.0.0",
+    "description": "Root package to manage ReadStream full stack application",
+    "scripts": {
+        "install-all": "npm install && npm install --prefix readstream-backend && npm install --prefix readstream-frontend",
+        "dev:backend": "npm run dev --prefix readstream-backend",
+        "dev:frontend": "npm run dev --prefix readstream-frontend",
+        "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\""
+    },
+    "devDependencies": {
+        "concurrently": "^8.2.2"
+    }
+}
