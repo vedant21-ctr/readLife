@@ -9,7 +9,9 @@ import { Loader2 } from "lucide-react";
 
 const CATEGORIES = ["All", "Academic", "Human & Environment", "Sports", "Political", "Music", "Financial Market"];
 
-export default function NewsPage() {
+import { Suspense } from "react";
+
+function NewsPageContent() {
     const { t } = useLanguage();
     const searchParams = useSearchParams();
     const initialCategory = searchParams.get('category') || "All";
@@ -100,5 +102,13 @@ export default function NewsPage() {
 
             </div>
         </div>
+    );
+}
+
+export default function NewsPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin" /></div>}>
+            <NewsPageContent />
+        </Suspense>
     );
 }
