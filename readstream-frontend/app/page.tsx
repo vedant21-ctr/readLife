@@ -443,18 +443,25 @@ export default function Home() {
             </div>
 
             {/* Promo Card */}
-            <div className="relative overflow-hidden rounded-2xl bg-foreground text-background p-8 text-center space-y-6">
+            <motion.div 
+              whileHover={{ scale: 1.02 }}
+              className="relative overflow-hidden rounded-2xl bg-foreground text-background p-8 text-center space-y-6 transition-all shadow-lg hover:shadow-amber-500/10"
+            >
               <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-transparent pointer-events-none" />
               <div className="relative z-10">
                 <h3 className="text-2xl font-serif font-black mb-2">ReadStream Premium</h3>
                 <p className="text-white/70 text-sm leading-relaxed mb-6">
                   Unlock unlimited access to our expert analysis, ad-free experience, and exclusive reports.
                 </p>
-                <button className="w-full py-4 bg-amber-500 text-foreground font-bold uppercase tracking-widest text-xs rounded-xl hover:bg-white hover:scale-[1.02] transition-all duration-300 shadow-lg glow">
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="w-full py-4 bg-amber-500 text-foreground font-bold uppercase tracking-widest text-xs rounded-xl transition-all duration-300 shadow-lg glow"
+                >
                   Upgrade Now
-                </button>
+                </motion.button>
               </div>
-            </div>
+            </motion.div>
 
           </aside>
         </div>
