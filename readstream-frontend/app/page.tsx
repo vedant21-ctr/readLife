@@ -215,6 +215,77 @@ export default function Home() {
 
       <main className="container mx-auto px-6 md:px-12 pb-24">
 
+        {/* Global Live Search Bar */}
+        <motion.div 
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.8, duration: 0.5 }}
+          className="max-w-2xl mx-auto mb-16 relative z-50 -mt-6"
+        >
+          <div className="bg-background/90 backdrop-blur-xl p-1.5 rounded-full shadow-xl shadow-black/5 border border-border-soft overflow-visible">
+            <div className="relative group flex items-center">
+              <Search className="absolute left-6 text-muted-foreground w-6 h-6 group-focus-within:text-amber-600 transition-colors" />
+              <input
+                ref={searchInputRef}
+                type="text"
+                placeholder="Search articles, topics, or authors..."
+                value={searchQuery}
+                onFocus={() => setSearchFocused(true)}
+                onBlur={() => setTimeout(() => setSearchFocused(false), 200)}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={handleKeyDown}
+                className="w-full pl-16 pr-6 py-4 bg-transparent rounded-full border-none focus:outline-none focus:ring-0 font-serif text-lg md:text-xl placeholder:text-muted-foreground/50 transition-all"
+              />
+              {isSearching && (
+                <div className="absolute right-6 animate-spin text-amber-500">
+                  <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full" />
+                </div>
+              )}
+
+              {/* Dropdown Results */}
+              <AnimatePresence>
+                {searchQuery.length > 0 && searchFocused && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    className="absolute top-full left-0 right-0 mt-4 bg-card rounded-2xl shadow-2xl border border-border-soft overflow-hidden z-[100] p-2"
+                  >
+                    {searchResults.length > 0 ? (
+                      <ul className="space-y-1">
+                        {searchResults.map((result, idx) => (
+                          <li key={result._id}>
+                            <Link href={`/news/${result._id}`}>
+                              <div className={cn(
+                                "p-4 rounded-xl transition-colors flex flex-col gap-1 cursor-pointer",
+                                highlightedIndex === idx ? "bg-amber-50 dark:bg-amber-900/20" : "hover:bg-secondary/50"
+                              )}>
+                                <span className="font-serif font-bold text-base text-foreground line-clamp-1">
+                                  {getHighlightedText(result.title, searchQuery)}
+                                </span>
+                                <span className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground flex justify-between mt-1">
+                                  {result.category || 'News'}
+                                  {highlightedIndex === idx && <span className="text-amber-600">Enter to read</span>}
+                                </span>
+                              </div>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      !isSearching && (
+                        <div className="p-6 text-center text-muted-foreground text-sm font-serif italic">
+                          No matches found for "{searchQuery}"
+                        </div>
+                      )
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Category Navigation */}
         <div className="sticky top-4 z-40 mb-16 flex justify-center">
           <motion.div
@@ -378,69 +449,7 @@ export default function Home() {
           {/* Sidebar */}
           <aside className="lg:col-span-4 space-y-10">
 
-            {/* Live Search Widget */}
-            <div className="bg-card p-1 rounded-2xl shadow-sm border border-border-soft sticky top-32 z-30">
-              <div className="relative group focus-within:ring-2 focus-within:ring-amber-500/20 rounded-xl transition-all">
-                <Search className="absolute left-4 top-4 text-muted-foreground w-5 h-5 group-focus-within:text-amber-600 transition-colors" />
-                <input
-                  ref={searchInputRef}
-                  type="text"
-                  placeholder="Search topics..."
-                  value={searchQuery}
-                  onFocus={() => setSearchFocused(true)}
-                  onBlur={() => setTimeout(() => setSearchFocused(false), 200)}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  className="w-full pl-12 pr-4 py-4 bg-secondary/30 rounded-xl border border-transparent focus:bg-background focus:outline-none font-serif placeholder:font-sans text-lg transition-all"
-                />
-                {isSearching && (
-                  <div className="absolute right-4 top-4 animate-spin text-amber-500">
-                    <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full" />
-                  </div>
-                )}
 
-                {/* Dropdown Results */}
-                <AnimatePresence>
-                  {searchQuery.length > 0 && searchFocused && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10, scale: 0.98 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      className="absolute top-full left-0 right-0 mt-2 bg-card rounded-xl shadow-xl border border-border-soft overflow-hidden z-50 p-2"
-                    >
-                      {searchResults.length > 0 ? (
-                        <ul className="space-y-1">
-                          {searchResults.map((result, idx) => (
-                            <li key={result._id}>
-                              <Link href={`/news/${result._id}`}>
-                                <div className={cn(
-                                  "p-3 rounded-lg transition-colors flex flex-col gap-1 cursor-pointer",
-                                  highlightedIndex === idx ? "bg-amber-50 dark:bg-amber-900/20" : "hover:bg-secondary/50"
-                                )}>
-                                  <span className="font-serif font-bold text-sm text-foreground line-clamp-1">
-                                    {getHighlightedText(result.title, searchQuery)}
-                                  </span>
-                                  <span className="text-[10px] uppercase font-bold text-muted-foreground flex justify-between">
-                                    {result.category || 'News'}
-                                    {highlightedIndex === idx && <span className="text-amber-600">Enter to read</span>}
-                                  </span>
-                                </div>
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      ) : (
-                        !isSearching && (
-                          <div className="p-4 text-center text-muted-foreground text-sm">
-                            No matches found for "{searchQuery}"
-                          </div>
-                        )
-                      )}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </div>
 
             {/* Promo Card */}
             <motion.div 
