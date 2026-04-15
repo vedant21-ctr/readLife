@@ -220,7 +220,7 @@ export default function Home() {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.5 }}
-          className="max-w-2xl mx-auto mb-16 relative z-50 -mt-6"
+          className="max-w-3xl mx-auto mt-4 mb-16 relative z-50"
         >
           <div className="bg-background/90 backdrop-blur-xl p-1.5 rounded-full shadow-xl shadow-black/5 border border-border-soft overflow-visible">
             <div className="relative group flex items-center">
@@ -447,31 +447,29 @@ export default function Home() {
           </div>
 
           {/* Sidebar */}
-          <aside className="lg:col-span-4 space-y-10">
-
-
-
-            {/* Promo Card */}
-            <motion.div 
-              whileHover={{ scale: 1.02 }}
-              className="relative overflow-hidden rounded-2xl bg-foreground text-background p-8 text-center space-y-6 transition-all shadow-lg hover:shadow-amber-500/10"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-transparent pointer-events-none" />
-              <div className="relative z-10">
-                <h3 className="text-2xl font-serif font-black mb-2">ReadStream Premium</h3>
-                <p className="text-white/70 text-sm leading-relaxed mb-6">
-                  Unlock unlimited access to our expert analysis, ad-free experience, and exclusive reports.
-                </p>
-                <motion.button 
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full py-4 bg-amber-500 text-foreground font-bold uppercase tracking-widest text-xs rounded-xl transition-all duration-300 shadow-lg glow"
-                >
-                  Upgrade Now
-                </motion.button>
-              </div>
-            </motion.div>
-
+          <aside className="lg:col-span-4">
+            <div className="sticky top-32 space-y-10">
+              {/* Promo Card */}
+              <motion.div 
+                whileHover={{ scale: 1.02 }}
+                className="relative overflow-hidden rounded-2xl bg-foreground text-background p-8 text-center space-y-6 shadow-xl hover:shadow-amber-500/10 transition-all border border-border"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-transparent pointer-events-none" />
+                <div className="relative z-10">
+                  <h3 className="text-2xl font-serif font-black mb-2">ReadStream Premium</h3>
+                  <p className="text-white/70 text-sm leading-relaxed mb-6">
+                    Unlock unlimited access to our expert analysis, ad-free experience, and exclusive reports.
+                  </p>
+                  <motion.button 
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-full py-4 bg-amber-500 text-foreground font-bold uppercase tracking-widest text-xs rounded-xl transition-all duration-300 shadow-lg glow"
+                  >
+                    Upgrade Now
+                  </motion.button>
+                </div>
+              </motion.div>
+            </div>
           </aside>
         </div>
       </main>
