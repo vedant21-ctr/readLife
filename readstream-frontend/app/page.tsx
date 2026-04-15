@@ -223,8 +223,10 @@ export default function Home() {
             className="bg-background/80 backdrop-blur-md border border-border-soft px-2 py-2 rounded-full shadow-sm flex gap-1 overflow-x-auto max-w-full"
           >
             {CATEGORIES.map((cat) => (
-              <button
+              <motion.button
                 key={cat}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setActiveCategory(cat)}
                 className={cn(
                   "relative px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 whitespace-nowrap",
@@ -234,7 +236,7 @@ export default function Home() {
                 )}
               >
                 {cat}
-              </button>
+              </motion.button>
             ))}
           </motion.div>
         </div>
