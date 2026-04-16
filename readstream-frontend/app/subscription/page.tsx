@@ -33,12 +33,10 @@ export default function SubscriptionPage() {
             return;
         }
         if (plan === 'free') {
-            // Downgrade or basic logic
             processSubscription('free');
             return;
         }
-        setSelectedPlan(plan);
-        setShowPaymentModal(true);
+        router.push(`/payment?plan=${plan}`);
     };
 
     const processSubscription = async (plan: string) => {
@@ -55,9 +53,8 @@ export default function SubscriptionPage() {
             );
             setPaymentStatus('success');
             setTimeout(() => {
-                setShowPaymentModal(false);
                 router.push('/dashboard');
-            }, 1500);
+            }, 1000);
         } catch (error) {
             console.error("Subscription failed:", error);
             alert("Failed to update subscription. Please try again.");
@@ -154,111 +151,6 @@ export default function SubscriptionPage() {
 
                 </div>
             </div>
-
-            {/* Mock Payment Modal */}
-            <AnimatePresence>
-                {showPaymentModal && selectedPlan && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
-                    >
-                        <motion.div
-                            initial={{ scale: 0.95, y: 20 }}
-                            animate={{ scale: 1, y: 0 }}
-                            exit={{ scale: 0.95, y: 20 }}
-                            className="bg-white dark:bg-zinc-900 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden"
-                        >
-                            {paymentStatus === 'success' ? (
-                                <div className="p-12 flex flex-col items-center justify-center text-center space-y-6">
-                                    <motion.div
-                                        initial={{ scale: 0 }}
-                                        animate={{ scale: 1 }}
-                                        transition={{ type: "spring", stiffness: 200, damping: 10 }}
-                                        className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center"
-                                    >
-                                        <Check className="w-10 h-10" />
-                                    </motion.div>
-                                    <h3 className="text-2xl font-serif font-black">Payment Successful!</h3>
-                                    <p className="text-muted-foreground">Welcome to ReadStream Premium.</p>
-                                </div>
-                            ) : (
-                                <>
-                                    <div className="flex items-center justify-between p-6 border-b border-border">
-                                        <h3 className="font-serif font-bold text-lg">Secure Payment</h3>
-                                        <button onClick={() => setShowPaymentModal(false)} className="text-muted-foreground hover:text-foreground">
-                                            <X className="w-5 h-5" />
-                                        </button>
-                                    </div>
-
-                                    <div className="p-6 space-y-6">
-                                        <div className="p-4 bg-secondary rounded-lg flex items-center justify-between">
-                                            <div>
-                                                <p className="text-xs font-bold uppercase text-muted-foreground">Selected Plan</p>
-                                                <p className="font-serif font-black text-xl capitalize">{selectedPlan}</p>
-                                            </div>
-                                            <div className="text-right">
-                                                <p className="font-serif font-bold text-xl">{selectedPlan === 'premium' ? '$9.00' : '$29.00'}</p>
-                                                <p className="text-xs text-muted-foreground">/mo</p>
-                                            </div>
-                                        </div>
-
-                                        <div className="space-y-4">
-                                            <div className="flex gap-4">
-                                                <button className="flex-1 py-2 border-2 border-amber-500 bg-amber-500/10 text-amber-700 font-bold text-sm rounded-lg flex items-center justify-center gap-2">
-                                                    <CreditCard className="w-4 h-4" /> Card
-                                                </button>
-                                                <button className="flex-1 py-2 border border-border bg-transparent text-muted-foreground font-bold text-sm rounded-lg hover:bg-secondary transition-colors">
-                                                    PayPal
-                                                </button>
-                                            </div>
-
-                                            <div className="space-y-2">
-                                                <label className="text-xs font-bold uppercase text-muted-foreground">Card Number</label>
-                                                <div className="relative">
-                                                    <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                                                    <input type="text" placeholder="0000 0000 0000 0000" className="w-full pl-10 pr-4 py-3 bg-secondary/30 border border-border rounded-lg font-mono text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20" />
-                                                </div>
-                                            </div>
-
-                                            <div className="grid grid-cols-2 gap-4">
-                                                <div className="space-y-2">
-                                                    <label className="text-xs font-bold uppercase text-muted-foreground">Expiry</label>
-                                                    <input type="text" placeholder="MM/YY" className="w-full px-4 py-3 bg-secondary/30 border border-border rounded-lg font-mono text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20" />
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <label className="text-xs font-bold uppercase text-muted-foreground">CVC</label>
-                                                    <input type="text" placeholder="123" className="w-full px-4 py-3 bg-secondary/30 border border-border rounded-lg font-mono text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20" />
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="flex items-center gap-2 text-xs text-muted-foreground bg-green-50 dark:bg-green-900/10 p-3 rounded-lg">
-                                            <ShieldCheck className="w-4 h-4 text-green-600" />
-                                            <span>Payments are secure and encrypted.</span>
-                                        </div>
-
-                                        <button
-                                            onClick={() => processSubscription(selectedPlan)}
-                                            disabled={paymentStatus === 'processing'}
-                                            className="w-full py-4 bg-foreground text-background font-bold uppercase tracking-widest text-sm rounded-xl hover:bg-amber-600 hover:text-white transition-all shadow-lg flex items-center justify-center gap-2"
-                                        >
-                                            {paymentStatus === 'processing' ? (
-                                                <>
-                                                    <Loader2 className="w-4 h-4 animate-spin" /> Processing...
-                                                </>
-                                            ) : (
-                                                `Pay ${selectedPlan === 'premium' ? '$9.00' : '$29.00'}`
-                                            )}
-                                        </button>
-                                    </div>
-                                </>
-                            )}
-                        </motion.div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
         </div>
     );
 }
