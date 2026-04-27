@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Settings, BookOpen, Bookmark, Clock, User, ExternalLink, Loader2, BarChart2, TrendingUp, Calendar } from "lucide-react";
@@ -9,7 +9,14 @@ import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
 import CountUp from 'react-countup';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import dynamic from "next/dynamic";
+// 1. CODE SPLITTING & 6. GRAPH OPTIMIZATION: Lazy load chart components to reduce initial bundle size
+const ResponsiveContainer = dynamic(() => import('recharts').then(mod => mod.ResponsiveContainer), { ssr: false });
+const BarChart = dynamic(() => import('recharts').then(mod => mod.BarChart), { ssr: false });
+const Bar = dynamic(() => import('recharts').then(mod => mod.Bar), { ssr: false });
+const XAxis = dynamic(() => import('recharts').then(mod => mod.XAxis), { ssr: false });
+const Tooltip = dynamic(() => import('recharts').then(mod => mod.Tooltip), { ssr: false });
+const Cell = dynamic(() => import('recharts').then(mod => mod.Cell), { ssr: false });
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 
@@ -23,11 +30,14 @@ export default function DashboardPage() {
     const [preferences, setPreferences] = useState({ language: 'en', categories: [] });
 
     useEffect(() => {
+        // 3. API OPTIMIZATION & 10. NETWORK OPTIMIZATION: Add abort controller to prevent overlapping requests
+        const controller = new AbortController();
         const fetchDashboardData = async () => {
             if (user?.token) {
                 try {
                     const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user/dashboard`, {
-                        headers: { Authorization: `Bearer ${user.token}` }
+                        headers: { Authorization: `Bearer ${user.token}` },
+                        signal: controller.signal
                     });
                     setDashboardUser(res.data);
                     // Init prefs
@@ -36,7 +46,9 @@ export default function DashboardPage() {
                         categories: res.data.preferences?.categories || []
                     });
                 } catch (error) {
-                    console.error("Failed to fetch dashboard data:", error);
+                    if (!axios.isCancel(error)) {
+                        console.error("Failed to fetch dashboard data:", error);
+                    }
                 } finally {
                     setLoading(false);
                 }
@@ -49,9 +61,12 @@ export default function DashboardPage() {
             setDashboardUser(user);
             fetchDashboardData();
         }
+
+        return () => controller.abort();
     }, [user]);
 
-    const handleUpdateSettings = async () => {
+    // 2. MEMOIZATION: Wrap handlers in useCallback to prevent unnecessary child re-renders
+    const handleUpdateSettings = useCallback(async () => {
         if (!user) return;
         try {
             await axios.put(
@@ -66,7 +81,7 @@ export default function DashboardPage() {
             console.error(error);
             alert("Failed to update settings");
         }
-    };
+    }, [user, preferences]);
 
     // Calculate Analytics
     const analytics = useMemo(() => {
@@ -370,7 +385,8 @@ export default function DashboardPage() {
                                 <div>
                                     <h2 className="text-2xl font-serif font-bold mb-6">Reading History</h2>
                                     <div className="bg-card rounded-xl border border-border/50 divide-y divide-border/50 overflow-hidden">
-                                        {displayUser.history?.map((item: any, i: number) => (
+                                        {/* 7. ACTIVITY LOG: Limit entries to last 6 items to avoid unnecessary rendering */}
+                                        {displayUser.history?.slice(0, 6).map((item: any, i: number) => (
                                             <motion.div
                                                 key={i}
                                                 initial={{ opacity: 0 }}
