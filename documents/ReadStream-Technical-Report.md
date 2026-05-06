@@ -469,4 +469,40 @@ A: User picks plan → POST /api/subscription {plan} → backend updates user.su
 
 ---
 
+---
+
+## 17. Team Members
+
+| Name | Enrollment No. | Contribution |
+|---|---|---|
+| **Vedant Satbhai** | 2401010500 | Backend Core (Auth, DB, Models, Middleware) · UML Diagrams |
+| **Augustya Purohit** | 2401010114 | Backend Core (Auth, DB, Models, Middleware) |
+| **Prajjwal Tripathi** | 2401010331 | Frontend (Pages, Components, UI/UX) |
+| **Mukund Mangla** | 2401010286 | Frontend (Pages, Components, UI/UX) |
+| **Ram Bharadwaj** | — | Technical Report · Diagrams |
+
+### Contribution Breakdown
+
+**Vedant Satbhai & Augustya Purohit — Backend Core**
+- Express server setup, middleware pipeline (`server.js`, `config/db.js`)
+- All 5 Mongoose models — User, Content, SavedItem, Collection, Comment
+- JWT authentication system, bcrypt password hashing
+- `protect` and `admin` middleware (`middleware/auth.js`)
+- Error handling middleware (`middleware/errorHandler.js`)
+
+**Prajjwal Tripathi & Mukund Mangla — Frontend**
+- All Next.js pages — Home, News, Dashboard, Login, Signup, Subscription, Payment
+- React components — Navbar, NewsCard, HotNewsSlider, SkeletonCard, SmoothScroll
+- AuthContext, LanguageContext (EN/HI/MR), ThemeProvider
+- Framer Motion animations, Tailwind CSS styling, Recharts dashboard
+
+**Ram Bharadwaj — Report & Diagrams**
+- Full 15-page Technical Project Report
+- ER Diagram, Sequence Diagram, Use Case Diagram, Class Diagram
+
+**Vedant Satbhai — Additional**
+- UML & Architecture Diagrams
+
+---
+
 *ReadStream — Full Technical Report · Node.js · Next.js · MongoDB · Google Gemini AI*

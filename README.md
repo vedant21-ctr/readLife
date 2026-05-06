@@ -50,8 +50,7 @@
 - **Mongoose** - Elegant MongoDB object modeling
 - **JWT (JSON Web Tokens)** - Secure authentication mechanism
 - **Google Gemini AI** - Advanced AI capabilities for content summarization
-- **Bcrypt** - Secure password hashing
-- **Nodemon** - Development auto-reload
+6
 
 ## 🚀 Quick Start
 
@@ -458,11 +457,37 @@ Please open an issue on GitHub including:
 
 This project is licensed under the MIT License.
 
-## 👨‍💻 Author
+## 👨‍💻 Team Members
 
-**Vedant S**
+| Name | Enrollment No. | Contribution |
+|---|---|---|
+| **Vedant Satbhai** | 2401010500 | Backend Core (Auth, DB, Models, Middleware) · UML Diagrams |
+| **Augustya Purohit** | 2401010114 | Backend Core (Auth, DB, Models, Middleware) |
+| **Prajjwal Tripathi** | 2401010331 | Frontend (Pages, Components, UI/UX) |
+| **Mukund Mangla** | 2401010286 | Frontend (Pages, Components, UI/UX) |
+| **Ram Bharadwaj** | — | Technical Report · Diagrams |
 
-- GitHub: [@vedant21-ctr](https://github.com/vedant21-ctr)
+### Contribution Breakdown
+
+**Vedant Satbhai & Augustya Purohit — Backend Core**
+- Express server setup, middleware pipeline
+- All 5 Mongoose models (User, Content, SavedItem, Collection, Comment)
+- JWT authentication, bcrypt password hashing
+- Auth middleware (`protect`, `admin`)
+- Database configuration and connection
+
+**Prajjwal Tripathi & Mukund Mangla — Frontend**
+- All Next.js pages (Home, News, Dashboard, Login, Signup, Subscription, Payment)
+- React components (Navbar, NewsCard, HotNewsSlider, SkeletonCard)
+- AuthContext, LanguageContext, ThemeProvider
+- Framer Motion animations, Tailwind CSS styling
+
+**Ram Bharadwaj — Report & Diagrams**
+- Full Technical Project Report
+- ER Diagram, Sequence Diagram, Use Case Diagram, Class Diagram
+
+**Vedant Satbhai — Additional**
+- UML & Architecture Diagrams
 
 ## � Resources & Documentation
 
